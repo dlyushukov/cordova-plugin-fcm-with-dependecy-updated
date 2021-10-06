@@ -204,6 +204,17 @@ fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
 }
 
 + (NSString*)getFCMToken {
+    if (fcmToken == nil) {
+        NSLog(@"FCM token is null execute tokenWithCompletion");
+        [[FIRMessaging messaging] tokenWithCompletion:^(NSString *token, NSError *error) {
+          if (error != nil) {
+            NSLog(@"Error getting FCM registration token: %@", error);
+          } else {
+            NSLog(@"FCM registration token: %@", token);
+            fcmToken = token;
+          }
+        }];
+    }
     return fcmToken;
 }
 
